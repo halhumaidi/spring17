@@ -1,0 +1,13 @@
+<!-- {% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.username }} <a href="{% url 'main:logout' %}">[logout]</a></p>
+{% else %}
+<p>Welcome, Guest <a href="{% url 'main:signin' %}">[login]</a></p>
+{% endif %} -->
