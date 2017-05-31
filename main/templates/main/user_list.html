@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User List</title>
+    <link href="{% static '/bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet"/>
+    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
+  </head>
+  <body>
+  {% for user in user_list %}
+  <a href="{% url 'main:user_coffees' user_id=user.id %}"><div class="col col-sm-3">{{user}}</div></a>
+  {% endfor %}
+  </body>
+</html>
