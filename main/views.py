@@ -219,3 +219,17 @@ def createOrder(request, coffee_id):
         form = OrderForm()
         context['form']=form
         return render(request, 'main/createOrder.html', context)
+
+def user_list(request):
+    context = {}
+    user_list = User.objects.all()
+    context['user_list'] = user_list
+    return render(request, 'main/user_list.html', context)
+
+def user_coffees(request, user_id):
+    context = {}
+    user = User.objects.get(id=user_id)
+    context['user']=user
+    coffees = Coffee.objects.filter(user=user)
+    context['coffees']=coffees
+    return render(request, 'main/user_coffees.html', context)
