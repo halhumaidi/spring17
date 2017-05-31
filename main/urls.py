@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^editSyrup/(?P<syrup_id>[0-9])$',views.editSyrup, name = "editSyrup"),
     url(r'^createPowder/$',views.createPowder, name = "createPowder"),
     url(r'^editPowder/(?P<powder_id>[0-9])$',views.editPowder, name = "editPowder"),
+    url(r'^createOrder/(?P<coffee_id>[0-9])$',views.createOrder, name = "createOrder"),
 
 ]
