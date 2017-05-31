@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'main',
+    'crispy_forms',
 ]
 
 SITE_ID = 1
@@ -59,6 +60,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'spring17.urls'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
