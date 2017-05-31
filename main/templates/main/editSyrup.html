@@ -4,15 +4,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Create Coffee</title>
+    <title>Edit Syrup</title>
     <link href="{% static '/bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet"/>
     <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
   </head>
   <body>
-    <form class="" action="{% url 'main:createCoffee' %}" method="post">
+    <form class="" action="{% url 'main:editSyrup' syrup_id=syrup.id %}" method="post">
       {% csrf_token %}
       {{form|crispy}}
-    <input type="submit" name="" value="Create">
+    <input type="submit" name="" value="Edit">
     </form>
   </body>
 </html>
