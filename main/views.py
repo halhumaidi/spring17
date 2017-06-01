@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import *
+import datetime
 
 def main(request):
 
@@ -8,8 +9,7 @@ def main(request):
 
     return render(request, "main/homepage.html", context)
 
-def home(request):
-    return render(request, "main/home.html", {})
+
 
 
 def createCoffee(request):
@@ -50,6 +50,10 @@ def editCoffee(request, coffee_id):
         form = CoffeeForm(instance=coffee)
         context["form"]=form
         return render(request, "main/editCoffee.html", context)
+
+def deleteCoffee(request, coffee_id):
+    Coffee.objects.get(id=coffee_id).delete()
+    return redirect("main:home")
 
 def createBean(request):
     context={}
@@ -233,3 +237,15 @@ def user_coffees(request, user_id):
     coffees = Coffee.objects.filter(user=user)
     context['coffees']=coffees
     return render(request, 'main/user_coffees.html', context)
+
+def home(request):
+    context = {}
+    user = request.user
+    context['user']=user
+    today = datetime.date.today()
+    context['today']=today
+    coffee_list = Coffee.objects.filter(user=user)
+    context['coffee_list']=coffee_list
+    order_list = Order.objects.filter(user=user, date=today)
+    context['order_list']=order_list
+    return render(request, "main/home.html", context)
