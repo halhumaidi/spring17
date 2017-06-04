@@ -17,18 +17,24 @@
  </form>
  </div>
 </div>
- <hr>
- <div class="row">
- {% for order in order_list %}
-   <div class="col-sm-4 col-md-3">
-     <div class="thumbnail">
-       <div class="caption">
-         <h3 class =" text-center">{{order.coffee}}</h3>
-       </div>
-     </div>
-   </div>
- {% endfor %}
+<hr>
+  <div class="row">
+  {% if order_list %}
+    {% for order in order_list %}
+      <div class="col-sm-4 col-md-3">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3 class =" text-center">{{order.coffee}}</h3>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+  <h1>HAHA you're broke</h1>
+  {% endif %}
 </div>
+<div class="row">
+  <a href="{% url 'main:send_order_email' today.year today.month today.day %}"><div class="btn btn-primary">Order</div></a>
 <hr>
 <div class="row">
  <h1>Customized Coffee </h1>

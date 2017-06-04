@@ -26,7 +26,11 @@ SECRET_KEY = '&tqpn7tvz+^^wd)3pkf-&8s2r@^ugmx-n_q#suivyy4od60isj'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "haya.b.alhumaidi@gmail.com"
+EMAIL_HOST_PASSWORD = ""
+EMAIL_PORT = 587
 
 # Application definition
 
