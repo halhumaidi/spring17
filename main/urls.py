@@ -6,6 +6,8 @@ urlpatterns = [
 
     url(r'^$',views.main),
     url(r'^home/$',views.home, name = "home"),
+    url(r'^logout/$',views.logout, name = "logout"),
+    url(r'^naughty_page/$',views.naughty_page, name = "naughty_page"),
     url(r'^user_list/$',views.user_list, name = "user_list"),
     url(r'^user_coffees/(?P<user_id>[0-9])$',views.user_coffees, name = "user_coffees"),
 
