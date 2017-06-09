@@ -34,6 +34,7 @@ def home(request):
         context['order_list']=order_list
     coffee_list = Coffee.objects.filter(user=user)
     context['coffee_list']=coffee_list
+
     return render(request, "main/home.html", context)
 
 def logout(request):
@@ -100,7 +101,7 @@ def deleteCoffee(request, coffee_id):
 
 def createBean(request):
     context={}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -119,7 +120,7 @@ def createBean(request):
 
 def editBean(request, bean_id):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -140,7 +141,7 @@ def editBean(request, bean_id):
         return render(request, "main/editBean.html", context)
 
 def deleteBean(request, bean_id):
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -149,7 +150,7 @@ def deleteBean(request, bean_id):
 
 def createRoast(request):
     context={}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -168,7 +169,7 @@ def createRoast(request):
 
 def editRoast(request, roast_id):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -189,7 +190,7 @@ def editRoast(request, roast_id):
         return render(request, "main/editRoast.html", context)
 
 def deleteRoast(request, roast_id):
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -198,7 +199,7 @@ def deleteRoast(request, roast_id):
 
 def createSyrup(request):
     context={}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -217,7 +218,7 @@ def createSyrup(request):
 
 def editSyrup(request, syrup_id):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -238,7 +239,7 @@ def editSyrup(request, syrup_id):
         return render(request, "main/editSyrup.html", context)
 
 def deleteSyrup(request, syrup_id):
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -247,7 +248,7 @@ def deleteSyrup(request, syrup_id):
 
 def createPowder(request):
     context={}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -266,7 +267,7 @@ def createPowder(request):
 
 def editPowder(request, powder_id):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -287,7 +288,7 @@ def editPowder(request, powder_id):
         return render(request, "main/editPowder.html", context)
 
 def deletePowder(request, powder_id):
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -319,7 +320,7 @@ def createOrder(request, coffee_id):
 
 def user_list(request):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -329,7 +330,7 @@ def user_list(request):
 
 def user_coffees(request, user_id):
     context = {}
-    if not x.user.is_authenticated():
+    if not request.user.is_authenticated():
       return redirect('/admin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
@@ -387,3 +388,12 @@ def replecate_order(request, year, month, day):
         context['form'] = form
 
     return render(request, "main/replecate_order.html", context)
+
+def received_order(request, year, month, day):
+    context = {}
+    date = datetime.datetime.strptime('%s%s%s'%(year, month, day), '%Y%m%d').date()
+    context['today'] = date
+    if not request.user.is_authenticated():
+        return redirect('/accounts/github/login')
+    Order.objects.get(date=date).delete()
+    return redirect("main:home")

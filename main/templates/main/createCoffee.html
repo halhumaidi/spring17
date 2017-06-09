@@ -1,13 +1,15 @@
-<!DOCTYPE html>
+{% extends 'main/base.html' %}
 {% load crispy_forms_tags %}
-{% load static %}
+
 <html>
+  {% block header %}
   <head>
     <meta charset="utf-8">
     <title>Create Coffee</title>
-    <link href="{% static '/bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet"/>
-    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
+
   </head>
+  {% endblock %}
+    {% block content %}
   <body>
     <form class="" action="{% url 'main:createCoffee' %}" method="post">
       {% csrf_token %}
@@ -15,4 +17,5 @@
     <input type="submit" name="" value="Create">
     </form>
   </body>
+  {% endblock %}
 </html>

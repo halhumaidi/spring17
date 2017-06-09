@@ -13,6 +13,7 @@ urlpatterns = [
 
     url(r'^send_order_email/(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})/$',views.send_order_email, name = "send_order_email"),
     url(r'^replecate_order/(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})/$',views.replecate_order, name = "replecate_order"),
+    url(r'^received_order/(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})/$',views.received_order, name = "received_order"),
     url(r'^createCoffee/$',views.createCoffee, name = "createCoffee"),
     url(r'^editCoffee/(?P<coffee_id>[0-9])$',views.editCoffee, name = "editCoffee"),
     url(r'^deleteCoffee/(?P<coffee_id>[0-9])$',views.deleteCoffee, name = "deleteCoffee"),
