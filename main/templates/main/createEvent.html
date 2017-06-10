@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+<html>
+  {% block header %}
+  <head>
+    <meta charset="utf-8">
+    <title>Add Event</title>
+
+  </head>
+  {% endblock %}
+    {% block content %}
+  <body>
+    <form class="" action="{% url 'main:createEvent' %}" method="post">
+      {% csrf_token %}
+      {{form|crispy}}
+    <input type="submit" name="" value="Create">
+    </form>
+  </body>
+  {% endblock %}
+</html>

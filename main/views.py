@@ -5,6 +5,7 @@ import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import logout as django_logout
+from django.contrib.auth import authenticate, login
 
 
 
@@ -389,13 +390,15 @@ def replecate_order(request, year, month, day):
 
     return render(request, "main/replecate_order.html", context)
 
-def received_order(request, year, month, day):
+def received_order(request, order_id, year, month, day):
     context = {}
     date = datetime.datetime.strptime('%s%s%s'%(year, month, day), '%Y%m%d').date()
     context['today'] = date
     if not request.user.is_authenticated():
         return redirect('/accounts/github/login')
-    Order.objects.get(date=date).delete()
+    order= Order.objects.get(id=order_id, date=date)
+    context['order'] = order
+    order.delete()
     return redirect("main:home")
 
 def sent(request, year, month, day):
@@ -437,7 +440,7 @@ def event(request):
 def admin_page(request):
     context={}
     if not request.user.is_authenticated():
-      return redirect('/admin')
+      return redirect('/main/signin')
     if not request.user.is_staff:
       return redirect("main:naughty_page")
     form = SearchForm()
@@ -458,3 +461,90 @@ def admin_page(request):
     context['syrup']=syrup
 
     return render(request,'main/admin_page.html',context)
+
+def signin(request):
+    if request.method == 'GET':
+        form = SigninForm()
+        context = { 'form' : form }
+        return render(request, "main/signin.html", context)
+    else:
+        form = SigninForm(request.POST)
+        if not form.is_valid():
+            context = {'form': form}
+            return render(request, "main/signin.html", context)
+        # form is valid, so, proceed
+        username = form.data.get("username")
+        password = form.data.get("password")
+        user = authenticate(username=username, password=password)
+        if user is None:
+            context = {'form': form}
+            return render(request, "main/signin.html", context)
+        # user is authenticated
+        login(request, user)
+        return redirect("main:admin_page")
+
+def createEvent(request):
+    context = {}
+    if not request.user.is_authenticated():
+      return redirect('/main/signin')
+    if not request.user.is_staff:
+      return redirect("main:naughty_page")
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        context["form"]=form
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            form.save_m2m()
+            return redirect("main:event")
+        else:
+            return render(request, "main/createEvent.html", context)
+    else:
+        form = EventForm()
+        context["form"]=form
+        return render(request, "main/createEvent.html", context)
+
+def editEvent(request, events_id):
+    context = {}
+    if not request.user.is_authenticated():
+      return redirect('/main/signin')
+    if not request.user.is_staff:
+      return redirect("main:naughty_page")
+    event = Events.objects.get(id=events_id)
+    context["event"]=event
+
+    if request.method == "POST":
+        form = EventForm(request.POST, instance=event)
+        context["form"]=form
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            form.save_m2m()
+            return redirect("main:event")
+        else:
+            return render(request, "main/editEvent.html", context)
+    else:
+        form = EventForm(instance=event)
+        context["form"]=form
+        return render(request, "main/editEvent.html", context)
+
+def deleteEvent(request, events_id):
+    if not request.user.is_authenticated():
+      return redirect('/main/signin')
+    if not request.user.is_staff:
+      return redirect("main:naughty_page")
+    Events.objects.get(id=events_id).delete()
+    return redirect("main:event")
+
+def event_page(request):
+    context={}
+    if not request.user.is_authenticated():
+      return redirect('/main/signin')
+    if not request.user.is_staff:
+      return redirect("main:naughty_page")
+    event = Events.objects.all()
+    context['event']=event
+
+    return render(request,'main/event.html',context)

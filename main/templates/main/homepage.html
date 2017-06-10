@@ -1,6 +1,11 @@
 
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
+{% block header %} Welcome to ur Coffee Directory {% endblock %}
+{% block content %}
 
 <!DOCTYPE html>
 <html>
@@ -41,4 +46,9 @@
  <body>
    <div id='calendar'></div>
  </body>
+ <hr>
+ {% if request.user.is_staff %}
+ <a href="{% url 'main:event_page' %}" class="btn btn-primary" role="button">Go to Events Page</a>
+ {% endif %}
+ {% endblock %}
 </html>

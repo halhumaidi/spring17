@@ -38,3 +38,16 @@ class OrderForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     date = forms.DateField(widget = forms.DateInput(attrs={"type":"date"}))
+
+class SigninForm(forms.Form):
+    username= forms.CharField()
+    password= forms.CharField(widget=forms.PasswordInput)
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Events
+        fields = "__all__"
+        widgets = {
+        'start_date': forms.DateInput(attrs={"type":"date"}),
+        'end_date': forms.DateInput(attrs={"type":"date"}),
+        }

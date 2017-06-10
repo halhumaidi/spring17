@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block header %} Events {% endblock %}
+{% block content %}
+
+
+<div class="row">
+ <h1> Events List <a href="{% url 'main:createEvent' %}" class="btn btn-primary" role="button">Add Event</a> </h1>
+ <hr>
+ {% for event in event %}
+   <div class="col-sm-6 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{event}} </h3>
+         <p>
+           <a href="{% url 'main:editEvent' events_id=event.id%}" class="btn btn-primary" role="button">Edit</a>
+           <a href="{% url 'main:deleteEvent' events_id=event.id%}" class="btn btn-default" role="button">Delete</a>
+         </p>
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+
+
+{% endblock %}

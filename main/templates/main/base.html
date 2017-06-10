@@ -12,7 +12,7 @@
     </head>
     <style>
         #jumbo{
-        background-image: url("{% static 'main/Unknown.jpg' %}");
+        background-image: url("{% static 'main/Coffee.jpg' %}");
         background-size: 100%;
         background-repeat: no-repeat;
         }
@@ -52,8 +52,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                      <a class="navbar-brand" href="#">About</a>
+                      <a class="navbar-brand" href="{% url 'main:event' %}">Events</a>
+
+                    {% if not request.user.is_staff %}
                     <a class="navbar-brand" href="#">Navigate</a>
+                    {% else %}
+                    <a class="navbar-brand" href="{% url 'main:admin_page' %}">Admin Page</a>
+                    {% endif %}
                 </div>
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -84,7 +89,7 @@
         <div class="container">
 
 
-            <div id="jumbo" class="jumbotron text-center">
+            <div id="jumbo" class="jumbotron text-center" style="color:white">
 
                 <h1>
                     {% block header %}

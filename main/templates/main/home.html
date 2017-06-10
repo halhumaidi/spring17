@@ -31,7 +31,7 @@
             <p>
               <a href="{% url 'main:send_order_email' today.year today.month today.day %}" class="btn btn-primary" role="button">Order</a>
               <a href="{% url 'main:replecate_order' today.year today.month today.day %}" class="btn btn-default" role="button">Replecate</a>
-              <a href="{% url 'main:received_order' today.year today.month today.day %}" class="btn btn-default" role="button">Recieved</a>
+              <a href="{% url 'main:received_order' order.id today.year today.month today.day %}" class="btn btn-default" role="button">Recieved</a>
             </p>
           </div>
         </div>
