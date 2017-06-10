@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block header %} Welcome to ur Coffee Directory {% endblock %}
+{% block content %}
+<div class="row">
+ <h1> Who are you ? </h1>
+ <hr>
+
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+
+         <p>
+           <a href="{% url 'main:home' %}" class="btn btn-primary" role="button">Im a User</a>
+           <a href="{% url 'main:admin_page' %}" class="btn btn-default" role="button">Im an Admin</a>
+         </p>
+       </div>
+     </div>
+   </div>
+
+
+{% endblock %}

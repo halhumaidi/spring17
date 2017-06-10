@@ -1,0 +1,132 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block header %} Welcome to ur Coffee Directory {% endblock %}
+{% block content %}
+
+
+
+<div class="row">
+ <div class="col col-sm-6">
+ <h1>Date:{{today}}</h1>
+ </div>
+</div>
+<hr>
+
+  <div class="row">
+  {% if order_list %}
+    {% for order in order_list %}
+      <div class="col-sm-5 col-md-2">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3> {{order.coffee}} </h3>
+            user: {{order.user}}
+            <p>
+              <a href="{% url 'main:sent' today.year today.month today.day %}" class="btn btn-primary" role="button">Sent</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+  {% else %}
+  <h1> no orders today</h1>
+  {% endif %}
+</div>
+
+
+<hr>
+<div class="row">
+ <h1> Coffee List </h1>
+ <hr>
+ {% for coffee in coffee_list %}
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{coffee}}</h3>
+         user : {{coffee.user}}
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+<hr>
+<div class="row">
+ <h1> Bean List <a href="{% url 'main:createBean' %}" class="btn btn-primary" role="button">Add Bean</a> </h1>
+ <hr>
+ {% for bean in bean %}
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{bean}} </h3>
+         <p>
+           <a href="{% url 'main:editBean' bean_id=bean.id%}" class="btn btn-primary" role="button">Edit</a>
+           <a href="{% url 'main:deleteBean' bean_id=bean.id%}" class="btn btn-default" role="button">Delete</a>
+         </p>
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+<hr>
+<div class="row">
+ <h1> Roast List <a href="{% url 'main:createRoast' %}" class="btn btn-primary" role="button">Add Roast</a> </h1>
+ <hr>
+ {% for roast in roast %}
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{roast}} </h3>
+         <p>
+           <a href="{% url 'main:editRoast' roast_id=roast.id%}" class="btn btn-primary" role="button">Edit</a>
+           <a href="{% url 'main:deleteRoast' roast_id=roast.id%}" class="btn btn-default" role="button">Delete</a>
+         </p>
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+<hr>
+<div class="row">
+ <h1> Powder List <a href="{% url 'main:createPowder' %}" class="btn btn-primary" role="button">Add Powder</a> </h1>
+ <hr>
+ {% for powder in powder %}
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{powder}} </h3>
+         <p>
+           <a href="{% url 'main:editPowder' powder_id=powder.id%}" class="btn btn-primary" role="button">Edit</a>
+           <a href="{% url 'main:deletePowder' powder_id=powder.id%}" class="btn btn-default" role="button">Delete</a>
+         </p>
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+<hr>
+<div class="row">
+ <h1> Syrup List <a href="{% url 'main:createSyrup' %}" class="btn btn-primary" role="button">Add Syrup</a> </h1>
+ <hr>
+ {% for syrup in syrup %}
+   <div class="col-sm-5 col-md-2">
+     <div class="thumbnail">
+       <div class="caption">
+         <h3>{{syrup}} </h3>
+         <p>
+           <a href="{% url 'main:editSyrup' syrup_id=syrup.id%}" class="btn btn-primary" role="button">Edit</a>
+           <a href="{% url 'main:deleteSyrup' syrup_id=syrup.id%}" class="btn btn-default" role="button">Delete</a>
+         </p>
+       </div>
+     </div>
+   </div>
+ {% endfor %}
+</div>
+
+
+{% endblock %}

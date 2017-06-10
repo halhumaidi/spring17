@@ -39,13 +39,13 @@ def home(request):
 
 def logout(request):
     django_logout(request)
-    return redirect("main:home")
+    return redirect("main:main")
 
 def main(request):
 
     context = {}
 
-    return render(request, "main/homepage.html", context)
+    return render(request, "main/index.html", context)
 
 
 
@@ -110,7 +110,7 @@ def createBean(request):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/createBean.html", context)
     else:
@@ -132,7 +132,7 @@ def editBean(request, bean_id):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/editBean.html", context)
     else:
@@ -146,7 +146,7 @@ def deleteBean(request, bean_id):
     if not request.user.is_staff:
       return redirect("main:naughty_page")
     Bean.objects.get(id=bean_id).delete()
-    return redirect("main:home")
+    return redirect("main:admin_page")
 
 def createRoast(request):
     context={}
@@ -159,7 +159,7 @@ def createRoast(request):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/createRoast.html", context)
     else:
@@ -181,7 +181,7 @@ def editRoast(request, roast_id):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/editRoast.html", context)
     else:
@@ -195,7 +195,7 @@ def deleteRoast(request, roast_id):
     if not request.user.is_staff:
       return redirect("main:naughty_page")
     Roast.objects.get(id=roast_id).delete()
-    return redirect("main:home")
+    return redirect("main:admin_page")
 
 def createSyrup(request):
     context={}
@@ -208,7 +208,7 @@ def createSyrup(request):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/createSyrup.html", context)
     else:
@@ -230,7 +230,7 @@ def editSyrup(request, syrup_id):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/editSyrup.html", context)
     else:
@@ -244,7 +244,7 @@ def deleteSyrup(request, syrup_id):
     if not request.user.is_staff:
       return redirect("main:naughty_page")
     Syrup.objects.get(id=syrup_id).delete()
-    return redirect("main:home")
+    return redirect("main:admin_page")
 
 def createPowder(request):
     context={}
@@ -257,7 +257,7 @@ def createPowder(request):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/createPowder.html", context)
     else:
@@ -279,7 +279,7 @@ def editPowder(request, powder_id):
         context["form"]=form
         if form.is_valid():
             form.save()
-            return redirect("main:home")
+            return redirect("main:admin_page")
         else:
             return render(request, "main/editPowder.html", context)
     else:
@@ -293,7 +293,7 @@ def deletePowder(request, powder_id):
     if not request.user.is_staff:
       return redirect("main:naughty_page")
     Powder.objects.get(id=powder_id).delete()
-    return redirect("main:home")
+    return redirect("main:admin_page")
 
 
 def createOrder(request, coffee_id):
@@ -397,3 +397,64 @@ def received_order(request, year, month, day):
         return redirect('/accounts/github/login')
     Order.objects.get(date=date).delete()
     return redirect("main:home")
+
+def sent(request, year, month, day):
+    context = {}
+    date = datetime.datetime.strptime('%s%s%s'%(year, month, day), '%Y%m%d').date()
+    context['today'] = date
+    Order.objects.get(date=date).delete()
+    return redirect("main:admin_page")
+
+def event(request):
+    all_events = Events.objects.all()
+    get_event_types = Events.objects.only('event_type')
+
+    # if filters applied then get parameter and filter based on condition else return object
+    if request.GET:
+        event_arr = []
+        if request.GET.get('event_type') == "all":
+            all_events = Events.objects.all()
+        else:
+            all_events = Events.objects.filter(event_type__icontains=request.GET.get('event_type'))
+
+        for i in all_events:
+            event_sub_arr = {}
+            event_sub_arr['title'] = i.event_name
+            start_date = datetime.datetime.strptime(str(i.start_date.date()), "%Y-%m-%d").strftime("%Y-%m-%d")
+            end_date = datetime.datetime.strptime(str(i.end_date.date()), "%Y-%m-%d").strftime("%Y-%m-%d")
+            event_sub_arr['start'] = start_date
+            event_sub_arr['end'] = end_date
+            event_arr.append(event_sub_arr)
+        return HttpResponse(json.dumps(event_arr))
+
+    context = {
+        "events":all_events,
+        "get_event_types":get_event_types,
+
+    }
+    return render(request,'main/homepage.html', context)
+
+def admin_page(request):
+    context={}
+    if not request.user.is_authenticated():
+      return redirect('/admin')
+    if not request.user.is_staff:
+      return redirect("main:naughty_page")
+    form = SearchForm()
+    context["form"]=form
+    today = datetime.date.today()
+    context['today']=today
+    order_list = Order.objects.filter(date=today)
+    context['order_list']=order_list
+    coffee_list = Coffee.objects.all()
+    context['coffee_list']=coffee_list
+    bean = Bean.objects.all()
+    context['bean']=bean
+    roast = Roast.objects.all()
+    context['roast']=roast
+    powder = Powder.objects.all()
+    context['powder']=powder
+    syrup = Syrup.objects.all()
+    context['syrup']=syrup
+
+    return render(request,'main/admin_page.html',context)

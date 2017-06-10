@@ -47,7 +47,7 @@
 
 <hr>
 <div class="row">
- <h1>Customized Coffee </h1>
+ <h1>Customized Coffee <a href="{% url 'main:createCoffee' %}" class="btn btn-primary" role="button">Create ur Coffee</a></h1>
  <hr>
  {% for coffee in coffee_list %}
    <div class="col-sm-5 col-md-2">
